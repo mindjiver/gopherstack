@@ -1,17 +1,17 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
-	"sort"
 	"bytes"
-	"net/url"
-	"strings"
-	"crypto/sha1"
 	"crypto/hmac"
- 	"encoding/base64"
+	"crypto/sha1"
+	"encoding/base64"
+	"fmt"
 	"io/ioutil"
+	"net/http"
+	"net/url"
 	"os"
+	"sort"
+	"strings"
 )
 
 type CloudStackClient struct {
@@ -29,14 +29,14 @@ type CloudStackClient struct {
 // Creates a new client for communicating with CloudStack
 func (cloudstack CloudStackClient) New(apiurl string, apikey string, secret string) *CloudStackClient {
 	c := &CloudStackClient{
-	client: &http.Client{
-		Transport: &http.Transport{
-			Proxy: http.ProxyFromEnvironment,
+		client: &http.Client{
+			Transport: &http.Transport{
+				Proxy: http.ProxyFromEnvironment,
 			},
 		},
-	BaseURL: apiurl,
-	APIKey:  apikey,
-	Secret:  secret,
+		BaseURL: apiurl,
+		APIKey:  apikey,
+		Secret:  secret,
 	}
 	return c
 }
