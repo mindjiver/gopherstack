@@ -113,7 +113,7 @@ func (c CloudStackClient) VMStatus(id uint) (string, string, error) {
 }
 
 func NewRequest(c CloudStackClient, request string) {
-	var args = make(map[string]string)
+	args := make(map[string]string)
 	args["apikey"] = c.APIKey
 	args["command"] = request
 	args["response"] = "json"
@@ -138,7 +138,7 @@ func NewRequest(c CloudStackClient, request string) {
 	// * Convert the entire argument string to lowercase
 	// * Calculate HMAC SHA1 of argument string with CloudStack secret
 	// * URL encode the string and convert to base64
-	var s2 = strings.ToLower(s)
+	s2 := strings.ToLower(s)
 	mac := hmac.New(sha1.New, []byte(c.Secret))
 	mac.Write([]byte(s2))
 	signature := base64.URLEncoding.EncodeToString(mac.Sum(nil))

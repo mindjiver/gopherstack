@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	var request = flag.String("command", "listVirtualMachines", "List Virtual Machines")
+	request := flag.String("command", "listVirtualMachines", "List Virtual Machines")
 	flag.Parse()
 
 	apiurl := os.Getenv("CLOUDSTACK_API_URL")
