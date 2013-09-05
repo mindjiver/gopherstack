@@ -1,4 +1,6 @@
-package main
+// Simple wrapper for Apache CloudStack API.
+
+package cloudstack
 
 import (
 	"crypto/hmac"
@@ -13,6 +15,16 @@ import (
 	"sort"
 	"strings"
 )
+
+type Image struct {
+	Id           uint
+	Name         string
+	Distribution string
+}
+
+type ImagesResp struct {
+	Images []Image
+}
 
 type CloudStackClient struct {
 	// The http client for communicating
@@ -43,57 +55,67 @@ func (cloudstack CloudStackClient) New(apiurl string, apikey string, secret stri
 
 // Create a SSH key
 func (c CloudStackClient) CreateKey(name string, pub string) (uint, error) {
+	NewRequest(c, "createSSHKeyPair")
+	return 0, nil
+}
+
+// Deletes an SSH key
+func (c CloudStackClient) DeletesKey(id uint) error {
+	NewRequest(c, "deleteSSHKeyPair")
 	return nil
 }
 
-// Destroys an SSH key
-func (c CloudStackClient) DestroyKey(id uint) error {
-	return nil
-}
-
-// Creates a Virtual Machine and returns it's id
-func (c CloudStackClient) CreateDroplet(name string, size uint, image uint, region uint, keyId uint) (uint, error) {
-	return _, nil
+// Deploys a Virtual Machine and returns it's id
+func (c CloudStackClient) DeployVirtualMachine(name string, size uint, image uint, region uint, keyId uint) (uint, error) {
+	NewRequest(c, "deployVirtualMachine")
+	return 0, nil
 }
 
 // Destroys a Virtual Machine
-func (c CloudStackClient) DestroyDroplet(id uint) error {
+func (c CloudStackClient) DestroyVM(id uint) error {
+	NewRequest(c, "destroyVirtualMachine")
 	return nil
 }
 
 // Powers off a Virtual Machine
-func (c CloudStackClient) PowerOffDroplet(id uint) error {
+func (c CloudStackClient) StopVirtualMachine(id uint) error {
+	NewRequest(c, "stopVirtualMachine")
 	return nil
 }
 
 // Shutdown a Virtual Machine
-func (c CloudStackClient) ShutdownDroplet(id uint) error {
+func (c CloudStackClient) ShutdownVM(id uint) error {
+	NewRequest(c, "stopVirtualMachine")
 	return nil
 }
 
 // Creates a snaphot of a Virtual Machine by it's ID
 func (c CloudStackClient) CreateSnapshot(id uint, name string) error {
+	NewRequest(c, "createSnapshot")
 	return nil
 }
 
 // Returns all available templates
-func (c CloudStackClient) Images() ([]Image, error) {
+func (c CloudStackClient) Templates() ([]Image, error) {
+	NewRequest(c, "listTemplates")
 	return nil, nil
 }
 
-// Destroys an template by its ID.
-func (c CloudStackClient) DestroyImage(id uint) error {
+// Deletes an template by its ID.
+func (c CloudStackClient) DeleteTemplate(id uint) error {
+	NewRequest(c, "deleteTemplate")
 	return nil
 }
 
-// Returns DO's string representation of status "off" "new" "active" etc.
-func (d DigitalOceanClient) DropletStatus(id uint) (string, string, error) {
-	return nil, nil, nil
+// Returns CloudStack string representation of status "off" "new" "active" etc.
+func (c CloudStackClient) VMStatus(id uint) (string, string, error) {
+	NewRequest(c, "poweroff")
+	return "", "", nil
 }
 
-func NewRequest(cloudstack CloudStackClient, request string) {
+func NewRequest(c CloudStackClient, request string) {
 	var args = make(map[string]string)
-	args["apikey"] = cloudstack.APIKey
+	args["apikey"] = c.APIKey
 	args["command"] = request
 	args["response"] = "json"
 
@@ -118,7 +140,7 @@ func NewRequest(cloudstack CloudStackClient, request string) {
 	// * Calculate HMAC SHA1 of argument string with CloudStack secret
 	// * URL encode the string and convert to base64
 	var s2 = strings.ToLower(s)
-	mac := hmac.New(sha1.New, []byte(cloudstack.Secret))
+	mac := hmac.New(sha1.New, []byte(c.Secret))
 	mac.Write([]byte(s2))
 	signature := base64.URLEncoding.EncodeToString(mac.Sum(nil))
 	signature = url.QueryEscape(signature)
@@ -126,12 +148,12 @@ func NewRequest(cloudstack CloudStackClient, request string) {
 	signature = strings.Replace(signature, "_", "%2F", -1)
 
 	// Create the final URL before we issue the request
-	api_call := cloudstack.BaseURL + "?" + s + "&signature=" + signature
+	api_call := c.BaseURL + "?" + s + "&signature=" + signature
 
 	fmt.Println("Calling: " + api_call)
 
 	// Print the results if we recieve a 200 response.
-	resp, err := cloudstack.client.Get(api_call)
+	resp, err := c.client.Get(api_call)
 	if err != nil {
 		fmt.Printf("%s", err)
 		os.Exit(1)
