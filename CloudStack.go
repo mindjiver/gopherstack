@@ -4,6 +4,7 @@ import (
 	"crypto/hmac"
 	"crypto/sha1"
 	"encoding/base64"
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -11,7 +12,6 @@ import (
 	"os"
 	"sort"
 	"strings"
-	"flag"
 )
 
 type CloudStackClient struct {
@@ -39,6 +39,56 @@ func (cloudstack CloudStackClient) New(apiurl string, apikey string, secret stri
 		Secret:  secret,
 	}
 	return c
+}
+
+// Create a SSH key
+func (c CloudStackClient) CreateKey(name string, pub string) (uint, error) {
+	return nil
+}
+
+// Destroys an SSH key
+func (c CloudStackClient) DestroyKey(id uint) error {
+	return nil
+}
+
+// Creates a Virtual Machine and returns it's id
+func (c CloudStackClient) CreateDroplet(name string, size uint, image uint, region uint, keyId uint) (uint, error) {
+	return _, nil
+}
+
+// Destroys a Virtual Machine
+func (c CloudStackClient) DestroyDroplet(id uint) error {
+	return nil
+}
+
+// Powers off a Virtual Machine
+func (c CloudStackClient) PowerOffDroplet(id uint) error {
+	return nil
+}
+
+// Shutdown a Virtual Machine
+func (c CloudStackClient) ShutdownDroplet(id uint) error {
+	return nil
+}
+
+// Creates a snaphot of a Virtual Machine by it's ID
+func (c CloudStackClient) CreateSnapshot(id uint, name string) error {
+	return nil
+}
+
+// Returns all available templates
+func (c CloudStackClient) Images() ([]Image, error) {
+	return nil, nil
+}
+
+// Destroys an template by its ID.
+func (c CloudStackClient) DestroyImage(id uint) error {
+	return nil
+}
+
+// Returns DO's string representation of status "off" "new" "active" etc.
+func (d DigitalOceanClient) DropletStatus(id uint) (string, string, error) {
+	return nil, nil, nil
 }
 
 func NewRequest(cloudstack CloudStackClient, request string) {
