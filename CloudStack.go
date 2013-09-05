@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"crypto/hmac"
 	"crypto/sha1"
 	"encoding/base64"
@@ -12,6 +11,7 @@ import (
 	"os"
 	"sort"
 	"strings"
+	"flag"
 )
 
 type CloudStackClient struct {
@@ -41,10 +41,10 @@ func (cloudstack CloudStackClient) New(apiurl string, apikey string, secret stri
 	return c
 }
 
-func NewRequest(cloudstack CloudStackClient) {
+func NewRequest(cloudstack CloudStackClient, request string) {
 	var args = make(map[string]string)
 	args["apikey"] = cloudstack.APIKey
-	args["command"] = "listVirtualMachines"
+	args["command"] = request
 	args["response"] = "json"
 
 	// we need to create the URL with a list of (key, value) of
@@ -56,18 +56,12 @@ func NewRequest(cloudstack CloudStackClient) {
 	sort.Strings(keys)
 
 	// Create the initial api call string.
-	var params bytes.Buffer
+	var params []string
 	for _, k := range keys {
-		params.WriteString(k)
-		params.WriteString("=")
-		params.WriteString(url.QueryEscape(args[k]))
-		params.WriteString("&")
+		params = append(params, (k + "=" + url.QueryEscape(args[k])))
 	}
 
-	// Remove the trailing &, this should be fixed in a more
-	// proper way.
-	var s = params.String()
-	s = s[:len(s)-1]
+	s := strings.Join(params, "&")
 
 	// Generate signature for API call
 	// * Convert the entire argument string to lowercase
@@ -104,6 +98,9 @@ func NewRequest(cloudstack CloudStackClient) {
 }
 
 func main() {
+	var request = flag.String("command", "listVirtualMachines", "List Virtual Machines")
+	flag.Parse()
+
 	apiurl := os.Getenv("CLOUDSTACK_API_URL")
 	if len(apiurl) == 0 {
 		fmt.Println("Needed environment variable CLOUDSTACK_API_URL not found, exiting")
@@ -120,7 +117,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Println("CloudStack test...")
 	cs := CloudStackClient{}.New(apiurl, apikey, secret)
-	NewRequest(*cs)
+	NewRequest(*cs, *request)
 }
