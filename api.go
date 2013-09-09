@@ -15,14 +15,14 @@ import (
 	"strings"
 )
 
-type Image struct {
+type Template struct {
 	Id           uint
 	Name         string
 	Distribution string
 }
 
-type ImagesResp struct {
-	Images []Image
+type TemplatesResp struct {
+	Templates []Template
 }
 
 type CloudStackClient struct {
@@ -95,7 +95,7 @@ func (c CloudStackClient) CreateSnapshot(id uint, name string) error {
 }
 
 // Returns all available templates
-func (c CloudStackClient) Templates() ([]Image, error) {
+func (c CloudStackClient) Templates() ([]Template, error) {
 	NewRequest(c, "listTemplates")
 	return nil, nil
 }
