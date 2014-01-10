@@ -1,8 +1,8 @@
 package gopherstack
 
 import (
-	"net/url"
 	"log"
+	"net/url"
 )
 
 type QueryAsyncJobResultResponse struct {

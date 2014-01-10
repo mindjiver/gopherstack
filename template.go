@@ -40,4 +40,3 @@ func (c CloudStackClient) DeleteTemplate(id string) (uint, error) {
 	_, err := NewRequest(c, "deleteTemplate", params)
 	return 0, err
 }
-

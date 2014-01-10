@@ -74,7 +74,6 @@ func (c CloudStackClient) VirtualMachineState(id string) (string, string, error)
 	return ip, state, err
 }
 
-
 type DeployVirtualMachineResponse struct {
 	Deployvirtualmachineresponse struct {
 		ID    string `json:"id"`

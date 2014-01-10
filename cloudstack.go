@@ -2,8 +2,8 @@ package gopherstack
 
 import (
 	"flag"
-	"os"
 	"fmt"
+	"os"
 )
 
 func main() {
