@@ -51,7 +51,7 @@ func NewRequest(c CloudStackClient, request string, params url.Values) (interfac
 	// Create the final URL before we issue the request
 	url := c.BaseURL + "?" + s + "&signature=" + signature
 
-	//log.Printf("Calling %s ", url)
+	log.Printf("Calling %s ", url)
 
 	resp, err := client.Get(url)
 	if err != nil {
