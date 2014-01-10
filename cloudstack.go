@@ -1,4 +1,4 @@
-package main
+package cloudstack
 
 import (
 	"flag"
@@ -27,5 +27,5 @@ func main() {
 	}
 
 	cs := CloudStackClient{}.New(apiurl, apikey, secret)
-	NewRequest(*cs, *request)
+	NewRequest(*cs, *request, nil)
 }
