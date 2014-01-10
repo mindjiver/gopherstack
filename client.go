@@ -103,10 +103,16 @@ func NewRequest(c CloudStackClient, request string, params url.Values) (interfac
 		json.Unmarshal(body, &decodedResponse)
 		return decodedResponse, nil
 
+	case "listProjects":
+		var decodedResponse ListProjectsResponse
+		json.Unmarshal(body, &decodedResponse)
+		return decodedResponse, nil
+
 	case "queryAsyncJobResult":
 		var decodedResponse QueryAsyncJobResultResponse
 		json.Unmarshal(body, &decodedResponse)
 		return decodedResponse, nil
+
 	}
 
 	// only reached with unknown request
