@@ -1,4 +1,4 @@
-cloudstack-go
-=============
+gopherstack
+===========
 
-Simple CloudStack client written in Go
+CloudStack API library written in Go. Only tested towards CS 3.0.6 so far.

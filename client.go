@@ -1,4 +1,4 @@
-package cloudstack
+package gopherstack
 
 import (
 	"crypto/hmac"
