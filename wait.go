@@ -25,7 +25,7 @@ func (c CloudStackClient) WaitForAsyncJob(jobId string, timeout time.Duration) e
 				return
 			}
 
-			// check what the real state will be.
+			// job is completed, we can exit
 			if status == 1 {
 				result <- nil
 				return
@@ -75,6 +75,8 @@ func (c CloudStackClient) WaitForVirtualMachineState(vmid string, wanted_state s
 			}
 
 			// check what the real state will be.
+			log.Printf("current_state: %s", current_state)
+			log.Printf("wanted_state:  %s", wanted_state)
 			if current_state == wanted_state {
 				result <- nil
 				return
