@@ -22,15 +22,16 @@ func (c CloudStackClient) CreateTemplate(displaytext string, name string, volume
 }
 
 // Returns all available templates
-func (c CloudStackClient) ListTemplates(name string) ([]string, error) {
+func (c CloudStackClient) ListTemplates(name string, filter string) (string, error) {
 	params := url.Values{}
 	params.Set("name", name)
+	params.Set("templatefilter", filter)
 	_, err := NewRequest(c, "listTemplates", params)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
-	return nil, err
+	return "", err
 }
 
 // Deletes an template by its ID.
@@ -49,4 +50,40 @@ type CreateTemplateResponse struct {
 		ID    string `json:"id"`
 		Jobid string `json:"jobid"`
 	} `json:"createtemplateresponse"`
+}
+
+
+type Template struct {
+	Account          string        `json:"account"`
+	Created          string        `json:"created"`
+	CrossZones       bool          `json:"crossZones"`
+	Displaytext      string        `json:"displaytext"`
+	Domain           string        `json:"domain"`
+	Domainid         string        `json:"domainid"`
+	Format           string        `json:"format"`
+	Hypervisor       string        `json:"hypervisor"`
+	ID               string        `json:"id"`
+	Isextractable    bool          `json:"isextractable"`
+	Isfeatured       bool          `json:"isfeatured"`
+	Ispublic         bool          `json:"ispublic"`
+	Isready          bool          `json:"isready"`
+	Name             string        `json:"name"`
+	Ostypeid         string        `json:"ostypeid"`
+	Ostypename       string        `json:"ostypename"`
+	Passwordenabled  bool          `json:"passwordenabled"`
+	Size             float64       `json:"size"`
+	Sourcetemplateid string        `json:"sourcetemplateid"`
+	Sshkeyenabled    bool          `json:"sshkeyenabled"`
+	Status           string        `json:"status"`
+	Tags             []interface{} `json:"tags"`
+	Templatetype     string        `json:"templatetype"`
+	Zoneid           string        `json:"zoneid"`
+	Zonename         string        `json:"zonename"`
+}
+
+type ListTemplatesResponse struct {
+	Listtemplatesresponse struct {
+		Count    float64 `json:"count"`
+		Template []Template `json:"template"`
+	} `json:"listtemplatesresponse"`
 }
