@@ -54,7 +54,7 @@ func (c CloudStackClient) DestroyVirtualMachine(id string) (string, error) {
 }
 
 // Returns CloudStack string representation of the Virtual Machine state
-func (c CloudStackClient) VirtualMachineState(id string) (string, string, error) {
+func (c CloudStackClient) ListVirtualMachines(id string) (string, string, error) {
 	params := url.Values{}
 	params.Set("id", id)
 	response, err := NewRequest(c, "listVirtualMachines", params)
@@ -64,7 +64,6 @@ func (c CloudStackClient) VirtualMachineState(id string) (string, string, error)
 
 	count := response.(ListVirtualMachinesResponse).Listvirtualmachinesresponse.Count
 	if count != 1 {
-		// TODO: Return some like no virtual machines found.
 		return "", "", err
 	}
 

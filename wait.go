@@ -68,7 +68,7 @@ func (c CloudStackClient) WaitForVirtualMachineState(vmid string, wantedState st
 			attempts += 1
 
 			log.Printf("Checking virtual machine state... (attempt: %d)", attempts)
-			_, currentState, err := c.VirtualMachineState(vmid)
+			_, currentState, err := c.ListVirtualMachines(vmid)
 			if err != nil {
 				result <- err
 				return

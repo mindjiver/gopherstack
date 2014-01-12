@@ -1,4 +1,5 @@
 gopherstack
 ===========
 
-CloudStack API library written in Go. Only tested towards CS 3.0.6 so far.
+Cloudstack API library written in Go. Only tested towards Cloudstack
+3.0.6 so far.

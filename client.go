@@ -108,6 +108,16 @@ func NewRequest(c CloudStackClient, request string, params url.Values) (interfac
 		json.Unmarshal(body, &decodedResponse)
 		return decodedResponse, nil
 
+	case "listVolumes":
+		var decodedResponse ListVolumesResponse
+		json.Unmarshal(body, &decodedResponse)
+		return decodedResponse, nil
+
+	case "createTemplate":
+		var decodedResponse CreateTemplateResponse
+		json.Unmarshal(body, &decodedResponse)
+		return decodedResponse, nil
+
 	case "queryAsyncJobResult":
 		var decodedResponse QueryAsyncJobResultResponse
 		json.Unmarshal(body, &decodedResponse)
