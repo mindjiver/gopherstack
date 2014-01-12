@@ -118,7 +118,7 @@ func NewRequest(c CloudStackClient, request string, params url.Values) (interfac
 		json.Unmarshal(body, &decodedResponse)
 		return decodedResponse, nil
 
-	case "ListTemplatesResponse":
+	case "listTemplates":
 		var decodedResponse ListTemplatesResponse
 		json.Unmarshal(body, &decodedResponse)
 		return decodedResponse, nil
