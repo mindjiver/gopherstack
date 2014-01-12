@@ -27,7 +27,7 @@ func (c CloudStackClient) ListVolumes(vmid string) (string, error) {
 type ListVolumesResponse struct {
 	Listvolumesresponse struct {
 		Count  float64 `json:"count"`
-			Volume []struct {
+		Volume []struct {
 			Account                    string        `json:"account"`
 			Created                    string        `json:"created"`
 			Destroyed                  bool          `json:"destroyed"`

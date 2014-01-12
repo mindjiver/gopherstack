@@ -59,7 +59,6 @@ type CreateTemplateResponse struct {
 	} `json:"createtemplateresponse"`
 }
 
-
 type Template struct {
 	Account          string        `json:"account"`
 	Created          string        `json:"created"`
@@ -90,7 +89,7 @@ type Template struct {
 
 type ListTemplatesResponse struct {
 	Listtemplatesresponse struct {
-		Count    float64 `json:"count"`
+		Count    float64    `json:"count"`
 		Template []Template `json:"template"`
 	} `json:"listtemplatesresponse"`
 }
