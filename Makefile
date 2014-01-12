@@ -23,7 +23,7 @@ clean:
 	@git clean -dffxq
 
 format:
-	go fmt ./...
+	@go fmt ./...
 
 test: deps
 	@echo "$(OK_COLOR)==> Testing Gopherstack...$(NO_COLOR)"
