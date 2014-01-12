@@ -22,23 +22,23 @@ func (c CloudStackClient) CreateTemplate(displaytext string, name string, volume
 }
 
 // Returns all available templates
-func (c CloudStackClient) ListTemplates(name string, filter string) (string, error) {
+func (c CloudStackClient) ListTemplates(name string, filter string) (string, string, error) {
 	params := url.Values{}
 	params.Set("name", name)
 	params.Set("templatefilter", filter)
 	response, err := NewRequest(c, "listTemplates", params)
 	if err != nil {
-		return "", err
+		return "", "", err
 	}
 
 	count := response.(ListTemplatesResponse).Listtemplatesresponse.Count
 	if count < 1 {
-		return "", err
+		return "", "", err
 	}
 
 	foundName := response.(ListTemplatesResponse).Listtemplatesresponse.Template[0].Name
-
-	return foundName, err
+	templateId := response.(ListTemplatesResponse).Listtemplatesresponse.Template[0].ID
+	return foundName, templateId, err
 }
 
 // Deletes an template by its ID.
