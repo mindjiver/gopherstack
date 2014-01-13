@@ -3,10 +3,11 @@ package gopherstack
 import (
 	"net/url"
 	"strings"
+	"encoding/base64"
 )
 
 // Deploys a Virtual Machine and returns it's id
-func (c CloudStackClient) DeployVirtualMachine(serviceofferingid string, templateid string, zoneid string, networkids []string, keypair string, displayname string, diskoffering string, projectid string) (string, string, error) {
+func (c CloudStackClient) DeployVirtualMachine(serviceofferingid string, templateid string, zoneid string, networkids []string, keypair string, displayname string, diskoffering string, projectid string, userdata string) (string, string, error) {
 	params := url.Values{}
 	params.Set("serviceofferingid", serviceofferingid)
 	params.Set("templateid", templateid)
@@ -14,6 +15,7 @@ func (c CloudStackClient) DeployVirtualMachine(serviceofferingid string, templat
 	params.Set("networkids", strings.Join(networkids, ","))
 	params.Set("keypair", keypair)
 	params.Set("displayname", displayname)
+	params.Set("userdata", base64.StdEncoding.EncodeToString([]byte(userdata)))
 	if projectid != "" {
 		params.Set("projectid", projectid)
 	}
