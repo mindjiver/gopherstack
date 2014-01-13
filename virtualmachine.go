@@ -1,9 +1,9 @@
 package gopherstack
 
 import (
+	"encoding/base64"
 	"net/url"
 	"strings"
-	"encoding/base64"
 )
 
 // Deploys a Virtual Machine and returns it's id
