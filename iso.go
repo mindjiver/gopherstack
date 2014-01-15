@@ -21,12 +21,12 @@ func (c CloudStackClient) AttachIso(isoid string, vmid string) (string, error) {
 func (c CloudStackClient) DetachIso(vmid string) (string, error) {
 	params := url.Values{}
 	params.Set("virtualmachineid", vmid)
-	_, err := NewRequest(c, "detachIso", params)
+	response, err := NewRequest(c, "detachIso", params)
 	if err != nil {
 		return "", err
 	}
-	//jobid := response.(DetachIsoResponse).DetachIsoresponse.Jobid
-	return "", err
+	jobid := response.(DetachIsoResponse).Detachisoresponse.Jobid
+	return jobid, err
 }
 
 func (c CloudStackClient) ListIsos() (string, error) {
@@ -36,4 +36,10 @@ func (c CloudStackClient) ListIsos() (string, error) {
 	}
 	//jobid := response.(ListIsosResponse).Listisosresponse.Jobid
 	return "", err
+}
+
+type DetachIsoResponse struct {
+	Detachisoresponse struct {
+		Jobid string `json:"jobid"`
+	} `json:"detachisoresponse"`
 }

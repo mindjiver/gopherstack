@@ -7,21 +7,19 @@ import (
 )
 
 // Deploys a Virtual Machine and returns it's id
-func (c CloudStackClient) DeployVirtualMachine(serviceofferingid string, templateid string, zoneid string, networkids []string, keypair string, displayname string, diskoffering string, projectid string, userdata string) (string, string, error) {
+func (c CloudStackClient) DeployVirtualMachine(serviceofferingid string, templateid string, zoneid string, account string, diskofferingid string, displayname string, networkids []string, keypair string, projectid string, userdata string) (string, string, error) {
 	params := url.Values{}
 	params.Set("serviceofferingid", serviceofferingid)
 	params.Set("templateid", templateid)
 	params.Set("zoneid", zoneid)
+	//	params.Set("account", account)
+	params.Set("diskofferingid", diskofferingid)
+	params.Set("displayname", displayname)
+	params.Set("hypervisor", "xenserver")
 	params.Set("networkids", strings.Join(networkids, ","))
 	params.Set("keypair", keypair)
-	params.Set("displayname", displayname)
+	//	parsms.Set("projectid", projectid)
 	params.Set("userdata", base64.StdEncoding.EncodeToString([]byte(userdata)))
-	if projectid != "" {
-		params.Set("projectid", projectid)
-	}
-	if diskoffering != "" {
-		params.Set("diskoffering", diskoffering)
-	}
 	response, err := NewRequest(c, "deployVirtualMachine", params)
 	if err != nil {
 		return "", "", err
@@ -29,6 +27,21 @@ func (c CloudStackClient) DeployVirtualMachine(serviceofferingid string, templat
 	vmid := response.(DeployVirtualMachineResponse).Deployvirtualmachineresponse.ID
 	jobid := response.(DeployVirtualMachineResponse).Deployvirtualmachineresponse.Jobid
 	return vmid, jobid, nil
+}
+
+func (c CloudStackClient) UpdateVirtualMachine(id string, displayname string, group string, haenable string, ostypeid string, userdata string) (string, error) {
+	params := url.Values{}
+	params.Set("id", id)
+	params.Set("displayname", displayname)
+	//	params.Set("group", string)
+	//	params.Set("haenable", haenable)
+	//	params.Set("ostypeid", ostypeid)
+	params.Set("userdata", base64.StdEncoding.EncodeToString([]byte(userdata)))
+	_, err := NewRequest(c, "updateVirtualMachine", params)
+	if err != nil {
+		return "", err
+	}
+	return "", err
 }
 
 // Stops a Virtual Machine
