@@ -1,7 +1,6 @@
 package gopherstack
 
 import (
-	"log"
 	"net/url"
 )
 
@@ -19,17 +18,18 @@ type QueryAsyncJobResultResponse struct {
 }
 
 // Query CloudStack for the state of a scheduled job
-func (c CloudStackClient) QueryAsyncJobResult(jobid string) (float64, error) {
+func (c CloudStackClient) QueryAsyncJobResult(jobid string) (QueryAsyncJobResultResponse, error) {
+	var resp QueryAsyncJobResultResponse
+
 	params := url.Values{}
 	params.Set("jobid", jobid)
 	response, err := NewRequest(c, "queryAsyncJobResult", params)
 
 	if err != nil {
-		return -1, err
+		return resp, err
 	}
 
-	log.Printf("response: %v", response)
-	status := response.(QueryAsyncJobResultResponse).Queryasyncjobresultresponse.Jobstatus
+	resp = response.(QueryAsyncJobResultResponse)
 
-	return status, err
+	return resp, nil
 }

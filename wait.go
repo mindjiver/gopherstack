@@ -19,13 +19,14 @@ func (c CloudStackClient) WaitForAsyncJob(jobId string, timeout time.Duration) e
 			attempts += 1
 
 			log.Printf("Checking async job status... (attempt: %d)", attempts)
-			status, err := c.QueryAsyncJobResult(jobId)
+			response, err := c.QueryAsyncJobResult(jobId)
 			if err != nil {
 				result <- err
 				return
 			}
 
 			// job is completed, we can exit
+			status := response.Queryasyncjobresultresponse.Jobstatus
 			if status == 1 {
 				result <- nil
 				return
@@ -68,12 +69,19 @@ func (c CloudStackClient) WaitForVirtualMachineState(vmid string, wantedState st
 			attempts += 1
 
 			log.Printf("Checking virtual machine state... (attempt: %d)", attempts)
-			_, currentState, err := c.ListVirtualMachines(vmid)
+			response, err := c.ListVirtualMachines(vmid)
 			if err != nil {
 				result <- err
 				return
 			}
 
+			count := response.Listvirtualmachinesresponse.Count
+			if count != 1 {
+				result <- err
+				return
+			}
+
+			currentState := response.Listvirtualmachinesresponse.Virtualmachine[0].State
 			// check what the real state will be.
 			log.Printf("current state: %s", currentState)
 			log.Printf("wanted state:  %s", wantedState)

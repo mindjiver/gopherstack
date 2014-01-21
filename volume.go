@@ -5,23 +5,18 @@ import (
 )
 
 // List volumes for Virtual Machine by it's ID
-func (c CloudStackClient) ListVolumes(vmid string) (string, error) {
+func (c CloudStackClient) ListVolumes(vmid string) (ListVolumesResponse, error) {
+	var resp ListVolumesResponse
 	params := url.Values{}
 	params.Set("virtualmachineid", vmid)
 	response, err := NewRequest(c, "listVolumes", params)
 	if err != nil {
-		return "", err
+		return resp, err
 	}
 
-	count := response.(ListVolumesResponse).Listvolumesresponse.Count
-	// if there are no volumes we just return here
-	if count < 1 {
-		return "", err
-	}
+	resp = response.(ListVolumesResponse)
 
-	volumeId := response.(ListVolumesResponse).Listvolumesresponse.Volume[0].ID
-
-	return volumeId, err
+	return resp, err
 }
 
 type Volume struct {

@@ -4,14 +4,16 @@ import (
 	"net/url"
 )
 
-func (c CloudStackClient) ListDiskOfferings(domainid string, id string, keyword string, name string, page string, pagesize string) (string, error) {
+func (c CloudStackClient) ListDiskOfferings(domainid string, id string, keyword string, name string, page string, pagesize string) (ListDiskOfferingsResponse, error) {
+	var resp ListDiskOfferingsResponse
 	params := url.Values{}
 	//params.Set("domainid", domainid)
-	_, err := NewRequest(c, "listDiskOfferings", params)
+	response, err := NewRequest(c, "listDiskOfferings", params)
 	if err != nil {
-		return "", err
+		return resp, err
 	}
-	return "", err
+	resp = response.(ListDiskOfferingsResponse)
+	return resp, err
 }
 
 type DiskOffering struct {

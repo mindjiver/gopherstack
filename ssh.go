@@ -5,27 +5,29 @@ import (
 )
 
 // Create a SSH key pair
-func (c CloudStackClient) CreateSSHKeyPair(name string) (string, error) {
+func (c CloudStackClient) CreateSSHKeyPair(name string) (CreateSshKeyPairResponse, error) {
+	var resp CreateSshKeyPairResponse
 	params := url.Values{}
 	params.Set("name", name)
 	response, err := NewRequest(c, "createSSHKeyPair", params)
 	if err != nil {
-		return "", err
+		return resp, err
 	}
-	privatekey := response.(CreateSshKeyPairResponse).Createsshkeypairresponse.Keypair.Privatekey
-	return privatekey, nil
+	resp = response.(CreateSshKeyPairResponse)
+	return resp, nil
 }
 
 // Deletes an SSH key pair
-func (c CloudStackClient) DeleteSSHKeyPair(name string) (string, error) {
+func (c CloudStackClient) DeleteSSHKeyPair(name string) (DeleteSshKeyPairResponse, error) {
+	var resp DeleteSshKeyPairResponse
 	params := url.Values{}
 	params.Set("name", name)
 	response, err := NewRequest(c, "deleteSSHKeyPair", params)
 	if err != nil {
-		return "", err
+		return resp, err
 	}
-	success := response.(DeleteSshKeyPairResponse).Deletesshkeypairresponse.Success
-	return success, err
+	resp = response.(DeleteSshKeyPairResponse)
+	return resp, err
 }
 
 type CreateSshKeyPairResponse struct {

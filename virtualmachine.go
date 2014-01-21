@@ -7,7 +7,9 @@ import (
 )
 
 // Deploys a Virtual Machine and returns it's id
-func (c CloudStackClient) DeployVirtualMachine(serviceofferingid string, templateid string, zoneid string, account string, diskofferingid string, displayname string, networkids []string, keypair string, projectid string, userdata string, hypervisor string) (string, string, error) {
+func (c CloudStackClient) DeployVirtualMachine(serviceofferingid string, templateid string, zoneid string, account string, diskofferingid string, displayname string, networkids []string, keypair string, projectid string, userdata string, hypervisor string) (DeployVirtualMachineResponse, error) {
+	var resp DeployVirtualMachineResponse
+
 	params := url.Values{}
 	params.Set("serviceofferingid", serviceofferingid)
 	params.Set("templateid", templateid)
@@ -22,14 +24,15 @@ func (c CloudStackClient) DeployVirtualMachine(serviceofferingid string, templat
 	params.Set("userdata", base64.StdEncoding.EncodeToString([]byte(userdata)))
 	response, err := NewRequest(c, "deployVirtualMachine", params)
 	if err != nil {
-		return "", "", err
+		return resp, err
 	}
-	vmid := response.(DeployVirtualMachineResponse).Deployvirtualmachineresponse.ID
-	jobid := response.(DeployVirtualMachineResponse).Deployvirtualmachineresponse.Jobid
-	return vmid, jobid, nil
+	resp = response.(DeployVirtualMachineResponse)
+	return resp, nil
 }
 
-func (c CloudStackClient) UpdateVirtualMachine(id string, displayname string, group string, haenable string, ostypeid string, userdata string) (string, error) {
+func (c CloudStackClient) UpdateVirtualMachine(id string, displayname string, group string, haenable string, ostypeid string, userdata string) (UpdateVirtualMachineResponse, error) {
+	var resp UpdateVirtualMachineResponse
+
 	params := url.Values{}
 	params.Set("id", id)
 	params.Set("displayname", displayname)
@@ -37,55 +40,53 @@ func (c CloudStackClient) UpdateVirtualMachine(id string, displayname string, gr
 	//	params.Set("haenable", haenable)
 	//	params.Set("ostypeid", ostypeid)
 	params.Set("userdata", base64.StdEncoding.EncodeToString([]byte(userdata)))
-	_, err := NewRequest(c, "updateVirtualMachine", params)
+	response, err := NewRequest(c, "updateVirtualMachine", params)
 	if err != nil {
-		return "", err
+		return resp, err
 	}
-	return "", err
+	resp = response.(UpdateVirtualMachineResponse)
+	return resp, err
 }
 
 // Stops a Virtual Machine
-func (c CloudStackClient) StopVirtualMachine(id string) (string, error) {
+func (c CloudStackClient) StopVirtualMachine(id string) (StopVirtualMachineResponse, error) {
+	var resp StopVirtualMachineResponse
 	params := url.Values{}
 	params.Set("id", id)
 	response, err := NewRequest(c, "stopVirtualMachine", params)
 	if err != nil {
-		return "", err
+		return resp, err
 	}
-	jobid := response.(StopVirtualMachineResponse).Stopvirtualmachineresponse.Jobid
-	return jobid, err
+	resp = response.(StopVirtualMachineResponse)
+	return resp, err
 }
 
 // Destroys a Virtual Machine
-func (c CloudStackClient) DestroyVirtualMachine(id string) (string, error) {
+func (c CloudStackClient) DestroyVirtualMachine(id string) (DestroyVirtualMachineResponse, error) {
+	var resp DestroyVirtualMachineResponse
 	params := url.Values{}
 	params.Set("id", id)
 	response, err := NewRequest(c, "destroyVirtualMachine", params)
 	if err != nil {
-		return "", err
+		return resp, err
 	}
-	jobid := response.(DestroyVirtualMachineResponse).Destroyvirtualmachineresponse.Jobid
-	return jobid, nil
+	resp = response.(DestroyVirtualMachineResponse)
+	return resp, nil
 }
 
 // Returns CloudStack string representation of the Virtual Machine state
-func (c CloudStackClient) ListVirtualMachines(id string) (string, string, error) {
+func (c CloudStackClient) ListVirtualMachines(id string) (ListVirtualMachinesResponse, error) {
+	var resp ListVirtualMachinesResponse
 	params := url.Values{}
 	params.Set("id", id)
 	response, err := NewRequest(c, "listVirtualMachines", params)
 	if err != nil {
-		return "", "", err
+		return resp, err
 	}
 
-	count := response.(ListVirtualMachinesResponse).Listvirtualmachinesresponse.Count
-	if count != 1 {
-		return "", "", err
-	}
+	resp = response.(ListVirtualMachinesResponse)
 
-	state := response.(ListVirtualMachinesResponse).Listvirtualmachinesresponse.Virtualmachine[0].State
-	ip := response.(ListVirtualMachinesResponse).Listvirtualmachinesresponse.Virtualmachine[0].Nic[0].Ipaddress
-
-	return ip, state, err
+	return resp, err
 }
 
 type DeployVirtualMachineResponse struct {
@@ -155,4 +156,9 @@ type ListVirtualMachinesResponse struct {
 		Count          float64          `json:"count"`
 		Virtualmachine []Virtualmachine `json:"virtualmachine"`
 	} `json:"listvirtualmachinesresponse"`
+}
+
+type UpdateVirtualMachineResponse struct {
+	Updatevirtualmachineresponse struct {
+	}
 }

@@ -5,7 +5,8 @@ import (
 )
 
 // Creates a Template of a Virtual Machine by it's ID
-func (c CloudStackClient) CreateTemplate(displaytext string, name string, volumeid string, ostypeid string) (string, error) {
+func (c CloudStackClient) CreateTemplate(displaytext string, name string, volumeid string, ostypeid string) (CreateTemplateResponse, error) {
+	var resp CreateTemplateResponse
 	params := url.Values{}
 	params.Set("displaytext", displaytext)
 	params.Set("name", name)
@@ -14,42 +15,40 @@ func (c CloudStackClient) CreateTemplate(displaytext string, name string, volume
 
 	response, err := NewRequest(c, "createTemplate", params)
 	if err != nil {
-		return "", err
+		return resp, err
 	}
 
-	jobId := response.(CreateTemplateResponse).Createtemplateresponse.Jobid
-	return jobId, err
+	resp = response.(CreateTemplateResponse)
+	return resp, err
 }
 
 // Returns all available templates
-func (c CloudStackClient) ListTemplates(name string, filter string) (string, string, error) {
+func (c CloudStackClient) ListTemplates(name string, filter string) (ListTemplatesResponse, error) {
+	var resp ListTemplatesResponse
 	params := url.Values{}
 	params.Set("name", name)
 	params.Set("templatefilter", filter)
 	response, err := NewRequest(c, "listTemplates", params)
 	if err != nil {
-		return "", "", err
+		return resp, err
 	}
 
-	count := response.(ListTemplatesResponse).Listtemplatesresponse.Count
-	if count < 1 {
-		return "", "", err
-	}
-
-	foundName := response.(ListTemplatesResponse).Listtemplatesresponse.Template[0].Name
-	templateId := response.(ListTemplatesResponse).Listtemplatesresponse.Template[0].ID
-	return foundName, templateId, err
+	resp = response.(ListTemplatesResponse)
+	return resp, err
 }
 
 // Deletes an template by its ID.
-func (c CloudStackClient) DeleteTemplate(id string) (string, error) {
+func (c CloudStackClient) DeleteTemplate(id string) (DeleteTemplateResponse, error) {
+	var resp DeleteTemplateResponse
 	params := url.Values{}
 	params.Set("id", id)
-	_, err := NewRequest(c, "deleteTemplate", params)
+	response, err := NewRequest(c, "deleteTemplate", params)
 	if err != nil {
-		return "", err
+		return resp, err
 	}
-	return "", err
+
+	resp = response.(DeleteTemplateResponse)
+	return resp, err
 }
 
 type CreateTemplateResponse struct {
@@ -58,6 +57,12 @@ type CreateTemplateResponse struct {
 		Jobid string `json:"jobid"`
 	} `json:"createtemplateresponse"`
 }
+
+type DeleteTemplateResponse struct {
+	Deletetemplateresponse struct {
+	}
+}
+
 
 type Template struct {
 	Account          string        `json:"account"`

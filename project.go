@@ -5,20 +5,20 @@ import (
 )
 
 // List the available CloudStack projects
-func (c CloudStackClient) ListProjects(name string) (string, error) {
+func (c CloudStackClient) ListProjects(name string) (ListProjectsResponse, error) {
+	var resp ListProjectsResponse
 	params := url.Values{}
 
 	if name != "" {
 		params.Set("name", name)
 	}
-	_, err := NewRequest(c, "listProjects", params)
+	response, err := NewRequest(c, "listProjects", params)
 	if err != nil {
-		return "", err
+		return resp, err
 	}
 
-	// response.(ListProjectsResponse).Listprojectsresponse.Count
-	// response.(ListProjectsResponse).Project[0]
-	return "", err
+	resp = response.(ListProjectsResponse)
+	return resp, err
 }
 
 type Project struct {
