@@ -63,7 +63,6 @@ type DeleteTemplateResponse struct {
 	}
 }
 
-
 type Template struct {
 	Account          string        `json:"account"`
 	Created          string        `json:"created"`
