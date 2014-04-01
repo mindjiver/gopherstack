@@ -3,6 +3,7 @@ package gopherstack
 import (
 	"crypto/hmac"
 	"crypto/sha1"
+	"crypto/tls"
 	"encoding/base64"
 	"encoding/json"
 	"errors"
@@ -26,11 +27,12 @@ type CloudStackClient struct {
 	Secret string
 }
 
-// Creates a new client for communicating with CloudStack
-func (cloudstack CloudStackClient) New(apiurl string, apikey string, secret string) *CloudStackClient {
+// Creates a new client for communicating with Cloudstack
+func (cloudstack CloudStackClient) New(apiurl string, apikey string, secret string, insecureskipverify bool) *CloudStackClient {
 	c := &CloudStackClient{
 		client: &http.Client{
 			Transport: &http.Transport{
+				TLSClientConfig: &tls.Config{InsecureSkipVerify: insecureskipverify},
 				Proxy: http.ProxyFromEnvironment,
 			},
 		},
@@ -50,9 +52,9 @@ func NewRequest(c CloudStackClient, request string, params url.Values) (interfac
 
 	// Generate signature for API call
 	// * Serialize parameters and sort them by key, done by Encode()
-	// * Use byte sequence for '+' character as CloudStack requires this
+	// * Use byte sequence for '+' character as Cloudstack requires this
 	// * Convert the entire argument string to lowercase
-	// * Calculate HMAC SHA1 of argument string with CloudStack secret
+	// * Calculate HMAC SHA1 of argument string with Cloudstack secret
 	// * URL encode the string and convert to base64
 	s := params.Encode()
 	s2 := strings.Replace(s, "+", "%20", -1)
@@ -63,7 +65,7 @@ func NewRequest(c CloudStackClient, request string, params url.Values) (interfac
 	signature = url.QueryEscape(signature)
 
 	// Create the final URL before we issue the request
-	// For some reason CloudStack refuses to accept '+' as a space character so we byte escape it instead.
+	// For some reason Cloudstack refuses to accept '+' as a space character so we byte escape it instead.
 	url := c.BaseURL + "?" + s2 + "&signature=" + signature
 
 	log.Printf("Calling %s ", url)
@@ -79,7 +81,7 @@ func NewRequest(c CloudStackClient, request string, params url.Values) (interfac
 		return nil, err
 	}
 
-	log.Printf("response from cloudstack: %d - %s", resp.StatusCode, body)
+	log.Printf("Response from Cloudstack: %d - %s", resp.StatusCode, body)
 	if resp.StatusCode != 200 {
 		err = errors.New(fmt.Sprintf("Received HTTP client/server error from CloudStack: %d", resp.StatusCode))
 		return nil, err
