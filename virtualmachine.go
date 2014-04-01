@@ -20,8 +20,10 @@ func (c CloudStackClient) DeployVirtualMachine(serviceofferingid string, templat
 	params.Set("hypervisor", hypervisor)
 	params.Set("networkids", strings.Join(networkids, ","))
 	params.Set("keypair", keypair)
-	//	parsms.Set("projectid", projectid)
-	params.Set("userdata", base64.StdEncoding.EncodeToString([]byte(userdata)))
+	//	params.Set("projectid", projectid)
+	if userdata != "" {
+		params.Set("userdata", base64.StdEncoding.EncodeToString([]byte(userdata)))
+	}
 	response, err := NewRequest(c, "deployVirtualMachine", params)
 	if err != nil {
 		return resp, err
@@ -83,9 +85,7 @@ func (c CloudStackClient) ListVirtualMachines(id string) (ListVirtualMachinesRes
 	if err != nil {
 		return resp, err
 	}
-
 	resp = response.(ListVirtualMachinesResponse)
-
 	return resp, err
 }
 
