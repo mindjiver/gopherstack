@@ -25,10 +25,25 @@ func (c CloudStackClient) WaitForAsyncJob(jobId string, timeout time.Duration) e
 				return
 			}
 
-			// job is completed, we can exit
+			// Check status of the job we issued.
+			// 0 - pending / in progress
+			// 1 - succedded
+			// 2 - failed
+			// 3 - cancelled
 			status := response.Queryasyncjobresultresponse.Jobstatus
-			if status == 1 {
+			switch status {
+			case 0:
+				continue
+			case 1:
 				result <- nil
+				return
+			case 2:
+				err := fmt.Errorf("WaitForAsyncJob failed")
+				result <- err
+				return
+			case 3:
+				err := fmt.Errorf("WaitForAsyncJob was cancelled")
+				result <- err
 				return
 			}
 
@@ -37,7 +52,7 @@ func (c CloudStackClient) WaitForAsyncJob(jobId string, timeout time.Duration) e
 
 			// Verify we shouldn't exit
 			select {
-			case <-done:
+			case <- done:
 				// We finished, so just exit the goroutine
 				return
 			default:
@@ -48,16 +63,16 @@ func (c CloudStackClient) WaitForAsyncJob(jobId string, timeout time.Duration) e
 
 	log.Printf("Waiting for up to %d seconds for async job %s", timeout, jobId)
 	select {
-	case err := <-result:
+	case err := <- result:
 		return err
-	case <-time.After(timeout):
+	case <- time.After(timeout):
 		err := fmt.Errorf("Timeout while waiting to for async job to finish")
 		return err
 	}
 }
 
-// waitForAsyncJob simply blocks until the virtual machine is in the
-// specified state.
+// WaitForVirtualMachineState simply blocks until the virtual machine
+// is in the specified state.
 func (c CloudStackClient) WaitForVirtualMachineState(vmid string, wantedState string, timeout time.Duration) error {
 	done := make(chan struct{})
 	defer close(done)
@@ -95,7 +110,7 @@ func (c CloudStackClient) WaitForVirtualMachineState(vmid string, wantedState st
 
 			// Verify we shouldn't exit
 			select {
-			case <-done:
+			case <- done:
 				// We finished, so just exit the goroutine
 				return
 			default:
@@ -106,9 +121,9 @@ func (c CloudStackClient) WaitForVirtualMachineState(vmid string, wantedState st
 
 	log.Printf("Waiting for up to %d seconds for Virtual Machine state to converge", timeout)
 	select {
-	case err := <-result:
+	case err := <- result:
 		return err
-	case <-time.After(timeout):
+	case <- time.After(timeout):
 		err := fmt.Errorf("Timeout while waiting to for Virtual Machine to converge")
 		return err
 	}
