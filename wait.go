@@ -8,7 +8,7 @@ import (
 
 // waitForAsyncJob simply blocks until the the asynchronous job has
 // executed or has timed out.
-func (c CloudStackClient) WaitForAsyncJob(jobId string, timeout time.Duration) error {
+func (c CloudstackClient) WaitForAsyncJob(jobId string, timeout time.Duration) error {
 	done := make(chan struct{})
 	defer close(done)
 
@@ -73,7 +73,7 @@ func (c CloudStackClient) WaitForAsyncJob(jobId string, timeout time.Duration) e
 
 // WaitForVirtualMachineState simply blocks until the virtual machine
 // is in the specified state.
-func (c CloudStackClient) WaitForVirtualMachineState(vmid string, wantedState string, timeout time.Duration) error {
+func (c CloudstackClient) WaitForVirtualMachineState(vmid string, wantedState string, timeout time.Duration) error {
 	done := make(chan struct{})
 	defer close(done)
 

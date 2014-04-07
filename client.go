@@ -15,7 +15,7 @@ import (
 	"strings"
 )
 
-type CloudStackClient struct {
+type CloudstackClient struct {
 	// The http client for communicating
 	client *http.Client
 
@@ -28,8 +28,8 @@ type CloudStackClient struct {
 }
 
 // Creates a new client for communicating with Cloudstack
-func (cloudstack CloudStackClient) New(apiurl string, apikey string, secret string, insecureskipverify bool) *CloudStackClient {
-	c := &CloudStackClient{
+func (cloudstack CloudstackClient) New(apiurl string, apikey string, secret string, insecureskipverify bool) *CloudstackClient {
+	c := &CloudstackClient{
 		client: &http.Client{
 			Transport: &http.Transport{
 				TLSClientConfig: &tls.Config{InsecureSkipVerify: insecureskipverify},
@@ -43,7 +43,7 @@ func (cloudstack CloudStackClient) New(apiurl string, apikey string, secret stri
 	return c
 }
 
-func NewRequest(c CloudStackClient, request string, params url.Values) (interface{}, error) {
+func NewRequest(c CloudstackClient, request string, params url.Values) (interface{}, error) {
 	client := c.client
 
 	params.Set("apikey", c.APIKey)
@@ -83,7 +83,7 @@ func NewRequest(c CloudStackClient, request string, params url.Values) (interfac
 
 	log.Printf("Response from Cloudstack: %d - %s", resp.StatusCode, body)
 	if resp.StatusCode != 200 {
-		err = errors.New(fmt.Sprintf("Received HTTP client/server error from CloudStack: %d", resp.StatusCode))
+		err = errors.New(fmt.Sprintf("Received HTTP client/server error from Cloudstack: %d", resp.StatusCode))
 		return nil, err
 	}
 

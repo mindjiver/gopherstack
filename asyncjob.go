@@ -17,8 +17,8 @@ type QueryAsyncJobResultResponse struct {
 	} `json:"queryasyncjobresultresponse"`
 }
 
-// Query CloudStack for the state of a scheduled job
-func (c CloudStackClient) QueryAsyncJobResult(jobid string) (QueryAsyncJobResultResponse, error) {
+// Query Cloudstack for the state of a scheduled job
+func (c CloudstackClient) QueryAsyncJobResult(jobid string) (QueryAsyncJobResultResponse, error) {
 	var resp QueryAsyncJobResultResponse
 
 	params := url.Values{}

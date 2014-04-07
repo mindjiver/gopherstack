@@ -5,7 +5,7 @@ import (
 )
 
 // List volumes for Virtual Machine by it's ID
-func (c CloudStackClient) ListVolumes(vmid string) (ListVolumesResponse, error) {
+func (c CloudstackClient) ListVolumes(vmid string) (ListVolumesResponse, error) {
 	var resp ListVolumesResponse
 	params := url.Values{}
 	params.Set("virtualmachineid", vmid)

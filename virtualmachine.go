@@ -7,7 +7,7 @@ import (
 )
 
 // Deploys a Virtual Machine and returns it's id
-func (c CloudStackClient) DeployVirtualMachine(serviceofferingid string, templateid string, zoneid string, account string, diskofferingid string, displayname string, networkids []string, keypair string, projectid string, userdata string, hypervisor string) (DeployVirtualMachineResponse, error) {
+func (c CloudstackClient) DeployVirtualMachine(serviceofferingid string, templateid string, zoneid string, account string, diskofferingid string, displayname string, networkids []string, keypair string, projectid string, userdata string, hypervisor string) (DeployVirtualMachineResponse, error) {
 	var resp DeployVirtualMachineResponse
 
 	params := url.Values{}
@@ -32,7 +32,7 @@ func (c CloudStackClient) DeployVirtualMachine(serviceofferingid string, templat
 	return resp, nil
 }
 
-func (c CloudStackClient) UpdateVirtualMachine(id string, displayname string, group string, haenable string, ostypeid string, userdata string) (UpdateVirtualMachineResponse, error) {
+func (c CloudstackClient) UpdateVirtualMachine(id string, displayname string, group string, haenable string, ostypeid string, userdata string) (UpdateVirtualMachineResponse, error) {
 	var resp UpdateVirtualMachineResponse
 
 	params := url.Values{}
@@ -51,7 +51,7 @@ func (c CloudStackClient) UpdateVirtualMachine(id string, displayname string, gr
 }
 
 // Stops a Virtual Machine
-func (c CloudStackClient) StopVirtualMachine(id string) (StopVirtualMachineResponse, error) {
+func (c CloudstackClient) StopVirtualMachine(id string) (StopVirtualMachineResponse, error) {
 	var resp StopVirtualMachineResponse
 	params := url.Values{}
 	params.Set("id", id)
@@ -64,7 +64,7 @@ func (c CloudStackClient) StopVirtualMachine(id string) (StopVirtualMachineRespo
 }
 
 // Destroys a Virtual Machine
-func (c CloudStackClient) DestroyVirtualMachine(id string) (DestroyVirtualMachineResponse, error) {
+func (c CloudstackClient) DestroyVirtualMachine(id string) (DestroyVirtualMachineResponse, error) {
 	var resp DestroyVirtualMachineResponse
 	params := url.Values{}
 	params.Set("id", id)
@@ -76,8 +76,8 @@ func (c CloudStackClient) DestroyVirtualMachine(id string) (DestroyVirtualMachin
 	return resp, nil
 }
 
-// Returns CloudStack string representation of the Virtual Machine state
-func (c CloudStackClient) ListVirtualMachines(id string) (ListVirtualMachinesResponse, error) {
+// Returns Cloudstack string representation of the Virtual Machine state
+func (c CloudstackClient) ListVirtualMachines(id string) (ListVirtualMachinesResponse, error) {
 	var resp ListVirtualMachinesResponse
 	params := url.Values{}
 	params.Set("id", id)

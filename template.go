@@ -5,7 +5,7 @@ import (
 )
 
 // Creates a Template of a Virtual Machine by it's ID
-func (c CloudStackClient) CreateTemplate(displaytext string, name string, volumeid string, ostypeid string) (CreateTemplateResponse, error) {
+func (c CloudstackClient) CreateTemplate(displaytext string, name string, volumeid string, ostypeid string) (CreateTemplateResponse, error) {
 	var resp CreateTemplateResponse
 	params := url.Values{}
 	params.Set("displaytext", displaytext)
@@ -23,7 +23,7 @@ func (c CloudStackClient) CreateTemplate(displaytext string, name string, volume
 }
 
 // Returns all available templates
-func (c CloudStackClient) ListTemplates(name string, filter string) (ListTemplatesResponse, error) {
+func (c CloudstackClient) ListTemplates(name string, filter string) (ListTemplatesResponse, error) {
 	var resp ListTemplatesResponse
 	params := url.Values{}
 	params.Set("name", name)
@@ -38,7 +38,7 @@ func (c CloudStackClient) ListTemplates(name string, filter string) (ListTemplat
 }
 
 // Deletes an template by its ID.
-func (c CloudStackClient) DeleteTemplate(id string) (DeleteTemplateResponse, error) {
+func (c CloudstackClient) DeleteTemplate(id string) (DeleteTemplateResponse, error) {
 	var resp DeleteTemplateResponse
 	params := url.Values{}
 	params.Set("id", id)

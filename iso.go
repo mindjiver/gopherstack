@@ -5,7 +5,7 @@ import (
 )
 
 // Deploys a Virtual Machine and returns it's id
-func (c CloudStackClient) AttachIso(isoid string, vmid string) (AttachIsoResponse, error) {
+func (c CloudstackClient) AttachIso(isoid string, vmid string) (AttachIsoResponse, error) {
 	var resp AttachIsoResponse
 	params := url.Values{}
 	params.Set("id", isoid)
@@ -20,7 +20,7 @@ func (c CloudStackClient) AttachIso(isoid string, vmid string) (AttachIsoRespons
 	return resp, err
 }
 
-func (c CloudStackClient) DetachIso(vmid string) (DetachIsoResponse, error) {
+func (c CloudstackClient) DetachIso(vmid string) (DetachIsoResponse, error) {
 	var resp DetachIsoResponse
 	params := url.Values{}
 	params.Set("virtualmachineid", vmid)
@@ -32,7 +32,7 @@ func (c CloudStackClient) DetachIso(vmid string) (DetachIsoResponse, error) {
 	return resp, err
 }
 
-func (c CloudStackClient) ListIsos() (ListIsosResponse, error) {
+func (c CloudstackClient) ListIsos() (ListIsosResponse, error) {
 	var resp ListIsosResponse
 	response, err := NewRequest(c, "listIsos", nil)
 	if err != nil {

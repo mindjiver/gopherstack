@@ -4,7 +4,7 @@ import (
 	"net/url"
 )
 
-func (c CloudStackClient) ListDiskOfferings(domainid string, id string, keyword string, name string, page string, pagesize string) (ListDiskOfferingsResponse, error) {
+func (c CloudstackClient) ListDiskOfferings(domainid string, id string, keyword string, name string, page string, pagesize string) (ListDiskOfferingsResponse, error) {
 	var resp ListDiskOfferingsResponse
 	params := url.Values{}
 	//params.Set("domainid", domainid)

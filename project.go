@@ -4,8 +4,8 @@ import (
 	"net/url"
 )
 
-// List the available CloudStack projects
-func (c CloudStackClient) ListProjects(name string) (ListProjectsResponse, error) {
+// List the available Cloudstack projects
+func (c CloudstackClient) ListProjects(name string) (ListProjectsResponse, error) {
 	var resp ListProjectsResponse
 	params := url.Values{}
 

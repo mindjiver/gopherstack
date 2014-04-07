@@ -37,7 +37,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	cs := gopherstack.CloudStackClient{}.New(apiurl, apikey, secret)
+	cs := gopherstack.CloudstackClient{}.New(apiurl, apikey, secret)
 
 	vmid := "19d2acfb-e281-4a13-8d62-e04ab501271d"
 	response, err := cs.ListVirtualMachines(vmid)
