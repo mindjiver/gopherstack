@@ -50,7 +50,7 @@ func (c CloudstackClient) WaitForAsyncJob(jobId string, timeout time.Duration) e
 
 			// Verify we shouldn't exit
 			select {
-			case <- done:
+			case <-done:
 				// We finished, so just exit the goroutine
 				return
 			default:
@@ -61,9 +61,9 @@ func (c CloudstackClient) WaitForAsyncJob(jobId string, timeout time.Duration) e
 
 	log.Printf("Waiting for up to %d seconds for async job %s", timeout, jobId)
 	select {
-	case err := <- result:
+	case err := <-result:
 		return err
-	case <- time.After(timeout):
+	case <-time.After(timeout):
 		err := fmt.Errorf("Timeout while waiting to for async job to finish")
 		return err
 	}
@@ -108,7 +108,7 @@ func (c CloudstackClient) WaitForVirtualMachineState(vmid string, wantedState st
 
 			// Verify we shouldn't exit
 			select {
-			case <- done:
+			case <-done:
 				// We finished, so just exit the goroutine
 				return
 			default:
@@ -119,9 +119,9 @@ func (c CloudstackClient) WaitForVirtualMachineState(vmid string, wantedState st
 
 	log.Printf("Waiting for up to %d seconds for Virtual Machine state to converge", timeout)
 	select {
-	case err := <- result:
+	case err := <-result:
 		return err
-	case <- time.After(timeout):
+	case <-time.After(timeout):
 		err := fmt.Errorf("Timeout while waiting to for Virtual Machine to converge")
 		return err
 	}

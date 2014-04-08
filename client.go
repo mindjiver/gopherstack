@@ -33,7 +33,7 @@ func (cloudstack CloudstackClient) New(apiurl string, apikey string, secret stri
 		client: &http.Client{
 			Transport: &http.Transport{
 				TLSClientConfig: &tls.Config{InsecureSkipVerify: insecureskipverify},
-				Proxy: http.ProxyFromEnvironment,
+				Proxy:           http.ProxyFromEnvironment,
 			},
 		},
 		BaseURL: apiurl,
