@@ -26,14 +26,12 @@ func (c CloudstackClient) WaitForAsyncJob(jobId string, timeout time.Duration) e
 			}
 
 			// Check status of the job we issued.
-			// 0 - pending / in progress
+			// 0 - pending / in progress, we continue
 			// 1 - succedded
 			// 2 - failed
 			// 3 - cancelled
 			status := response.Queryasyncjobresultresponse.Jobstatus
 			switch status {
-			case 0:
-				continue
 			case 1:
 				result <- nil
 				return
@@ -47,7 +45,7 @@ func (c CloudstackClient) WaitForAsyncJob(jobId string, timeout time.Duration) e
 				return
 			}
 
-			// Wait 3 seconds in between
+			// Wait 3 seconds between requests
 			time.Sleep(3 * time.Second)
 
 			// Verify we shouldn't exit

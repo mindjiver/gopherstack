@@ -132,6 +132,8 @@ type Virtualmachine struct {
 	Haenable            bool          `json:"haenable"`
 	Hypervisor          string        `json:"hypervisor"`
 	ID                  string        `json:"id"`
+	IsoId               string        `json:"isoid"`
+	IsoName             string        `json:"isoname"`
 	Keypair             string        `json:"keypair"`
 	Memory              float64       `json:"memory"`
 	Name                string        `json:"name"`
