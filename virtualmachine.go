@@ -18,7 +18,9 @@ func (c CloudstackClient) DeployVirtualMachine(serviceofferingid string, templat
 	params.Set("diskofferingid", diskofferingid)
 	params.Set("displayname", displayname)
 	params.Set("hypervisor", hypervisor)
-	params.Set("networkids", strings.Join(networkids, ","))
+	if len(networkids) > 0 {
+		params.Set("networkids", strings.Join(networkids, ","))
+	}
 	params.Set("keypair", keypair)
 	//	params.Set("projectid", projectid)
 	if userdata != "" {
