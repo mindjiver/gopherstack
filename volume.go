@@ -9,6 +9,7 @@ func (c CloudstackClient) ListVolumes(vmid string) (ListVolumesResponse, error) 
 	var resp ListVolumesResponse
 	params := url.Values{}
 	params.Set("virtualmachineid", vmid)
+	params.Set("listall", "true")
 	response, err := NewRequest(c, "listVolumes", params)
 	if err != nil {
 		return resp, err
