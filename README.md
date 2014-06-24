@@ -1,8 +1,8 @@
 gopherstack
 ===========
 
-Cloudstack API library written in Go. Only tested towards Cloudstack
-3.0.6 so far. Main use so far has been to serve as a library for a
+Cloudstack API library written in Go. Tested towards Cloudstack 3.x
+and 4.x. Main use so far has been to serve as a library for a
 [Packer.io](http://www.packer.io) builder.
 
 Example usage
@@ -31,13 +31,13 @@ func main() {
 		fmt.Println("Needed environment variable CLOUDSTACK_API_KEY not found, exiting")
 		os.Exit(1)
 	}
-	secret := os.Getenv("CLOUDSTACK_SECRET")
+	secretkey := os.Getenv("CLOUDSTACK_SECRET_KEY")
 	if len(secret) == 0 {
-		fmt.Println("Needed environment variable CLOUDSTACK_SECRET not found, exiting")
+		fmt.Println("Needed environment variable CLOUDSTACK_SECRET_KEY not found, exiting")
 		os.Exit(1)
 	}
 
-	cs := gopherstack.CloudstackClient{}.New(apiurl, apikey, secret)
+	cs := gopherstack.CloudstackClient{}.New(apiurl, apikey, secretkey)
 
 	vmid := "19d2acfb-e281-4a13-8d62-e04ab501271d"
 	response, err := cs.ListVirtualMachines(vmid)

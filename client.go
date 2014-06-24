@@ -23,12 +23,12 @@ type CloudstackClient struct {
 	BaseURL string
 
 	// Credentials
-	APIKey string
-	Secret string
+	APIKey    string
+	SecretKey string
 }
 
 // Creates a new client for communicating with Cloudstack
-func (cloudstack CloudstackClient) New(apiurl string, apikey string, secret string, insecureskipverify bool) *CloudstackClient {
+func (cloudstack CloudstackClient) New(apiurl string, apikey string, secretkey string, insecureskipverify bool) *CloudstackClient {
 	c := &CloudstackClient{
 		client: &http.Client{
 			Transport: &http.Transport{
@@ -36,9 +36,9 @@ func (cloudstack CloudstackClient) New(apiurl string, apikey string, secret stri
 				Proxy:           http.ProxyFromEnvironment,
 			},
 		},
-		BaseURL: apiurl,
-		APIKey:  apikey,
-		Secret:  secret,
+		BaseURL:   apiurl,
+		APIKey:    apikey,
+		SecretKey: secretkey,
 	}
 	return c
 }
@@ -54,12 +54,12 @@ func NewRequest(c CloudstackClient, request string, params url.Values) (interfac
 	// * Serialize parameters and sort them by key, done by Encode()
 	// * Use byte sequence for '+' character as Cloudstack requires this
 	// * Convert the entire argument string to lowercase
-	// * Calculate HMAC SHA1 of argument string with Cloudstack secret
+	// * Calculate HMAC SHA1 of argument string with Cloudstack secret key
 	// * URL encode the string and convert to base64
 	s := params.Encode()
 	s2 := strings.Replace(s, "+", "%20", -1)
 	s3 := strings.ToLower(s2)
-	mac := hmac.New(sha1.New, []byte(c.Secret))
+	mac := hmac.New(sha1.New, []byte(c.SecretKey))
 	mac.Write([]byte(s3))
 	signature := base64.StdEncoding.EncodeToString(mac.Sum(nil))
 	signature = url.QueryEscape(signature)
