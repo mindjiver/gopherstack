@@ -5,13 +5,34 @@ import (
 )
 
 // Creates a Template of a Virtual Machine by it's ID
-func (c CloudstackClient) CreateTemplate(displaytext string, name string, volumeid string, ostypeid string) (CreateTemplateResponse, error) {
+func (c CloudstackClient) CreateTemplate(options *CreateTemplate) (CreateTemplateResponse, error) {
 	var resp CreateTemplateResponse
 	params := url.Values{}
-	params.Set("displaytext", displaytext)
-	params.Set("name", name)
-	params.Set("ostypeid", ostypeid)
-	params.Set("volumeid", volumeid)
+	params.Set("displaytext", options.Displaytext)
+	params.Set("name", options.Name)
+	params.Set("ostypeid", options.Ostypeid)
+	if options.Volumeid != "" {
+		params.Set("volumeid", options.Volumeid)
+	}
+	if options.Snapshotid != "" {
+		params.Set("snapshotid", options.Snapshotid)
+	}
+
+	if options.Isdynamicallyscalable {
+		params.Set("isdynamicallyscalable", "true")
+	}
+	if options.Isextractable {
+		params.Set("isextractable", "true")
+	}
+	if options.Isfeatured {
+		params.Set("isfeatured", "true")
+	}
+	if options.Ispublic {
+		params.Set("ispublic", "true")
+	}
+	if options.Passwordenabled {
+		params.Set("passwordenabled", "true")
+	}
 
 	response, err := NewRequest(c, "createTemplate", params)
 	if err != nil {
@@ -96,4 +117,17 @@ type ListTemplatesResponse struct {
 		Count    float64    `json:"count"`
 		Template []Template `json:"template"`
 	} `json:"listtemplatesresponse"`
+}
+
+type CreateTemplate struct {
+	Displaytext           string `json:"displaytext"`
+	Isdynamicallyscalable bool   `json:"isdynamicallyscalable"`
+	Isextractable         bool   `json:"isextractable"`
+	Isfeatured            bool   `json:"isfeatured"`
+	Ispublic              bool   `json:"ispublic"`
+	Name                  string `json:"name"`
+	Ostypeid              string `json:"ostypeid"`
+	Passwordenabled       bool   `json:"passwordenabled"`
+	Snapshotid            string `json:"snapshotid"`
+	Volumeid              string `json:"volumeid"`
 }
