@@ -85,31 +85,31 @@ type DeleteTemplateResponse struct {
 }
 
 type Template struct {
-	Account          string        `json:"account"`
-	Created          string        `json:"created"`
-	CrossZones       bool          `json:"crossZones"`
-	Displaytext      string        `json:"displaytext"`
-	Domain           string        `json:"domain"`
-	Domainid         string        `json:"domainid"`
-	Format           string        `json:"format"`
-	Hypervisor       string        `json:"hypervisor"`
-	ID               string        `json:"id"`
-	Isextractable    bool          `json:"isextractable"`
-	Isfeatured       bool          `json:"isfeatured"`
-	Ispublic         bool          `json:"ispublic"`
-	Isready          bool          `json:"isready"`
-	Name             string        `json:"name"`
-	Ostypeid         string        `json:"ostypeid"`
-	Ostypename       string        `json:"ostypename"`
-	Passwordenabled  bool          `json:"passwordenabled"`
-	Size             float64       `json:"size"`
-	Sourcetemplateid string        `json:"sourcetemplateid"`
-	Sshkeyenabled    bool          `json:"sshkeyenabled"`
-	Status           string        `json:"status"`
-	Tags             []interface{} `json:"tags"`
-	Templatetype     string        `json:"templatetype"`
-	Zoneid           string        `json:"zoneid"`
-	Zonename         string        `json:"zonename"`
+	Account          string  `json:"account"`
+	Created          string  `json:"created"`
+	CrossZones       bool    `json:"crossZones"`
+	Displaytext      string  `json:"displaytext"`
+	Domain           string  `json:"domain"`
+	Domainid         string  `json:"domainid"`
+	Format           string  `json:"format"`
+	Hypervisor       string  `json:"hypervisor"`
+	ID               string  `json:"id"`
+	Isextractable    bool    `json:"isextractable"`
+	Isfeatured       bool    `json:"isfeatured"`
+	Ispublic         bool    `json:"ispublic"`
+	Isready          bool    `json:"isready"`
+	Name             string  `json:"name"`
+	Ostypeid         string  `json:"ostypeid"`
+	Ostypename       string  `json:"ostypename"`
+	Passwordenabled  bool    `json:"passwordenabled"`
+	Size             float64 `json:"size"`
+	Sourcetemplateid string  `json:"sourcetemplateid"`
+	Sshkeyenabled    bool    `json:"sshkeyenabled"`
+	Status           string  `json:"status"`
+	Tags             []Tag   `json:"tags"`
+	Templatetype     string  `json:"templatetype"`
+	Zoneid           string  `json:"zoneid"`
+	Zonename         string  `json:"zonename"`
 }
 
 type ListTemplatesResponse struct {
