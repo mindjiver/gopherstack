@@ -14,8 +14,8 @@ func (c CloudstackClient) CreateTags(options *CreateTags) (CreateTagsResponse, e
 	params.Set("resourceids", strings.Join(options.Resourceids, ","))
 	params.Set("resourcetype", options.Resourcetype)
 	for j, tag := range options.Tags {
-		params.Set("tag["+strconv.Itoa(j+1)+"].key", tag.Key)
-		params.Set("tag["+strconv.Itoa(j+1)+"].value", tag.Value)
+		params.Set("tags["+strconv.Itoa(j+1)+"].key", tag.Key)
+		params.Set("tags["+strconv.Itoa(j+1)+"].value", tag.Value)
 	}
 
 	if options.Customer != "" {
@@ -39,8 +39,8 @@ func (c CloudstackClient) DeleteTags(options *DeleteTags) (DeleteTagsResponse, e
 	params.Set("resourceids", strings.Join(options.Resourceids, ","))
 	params.Set("resourcetype", options.Resourcetype)
 	for j, tag := range options.Tags {
-		params.Set("tag["+strconv.Itoa(j+1)+"].key", tag.Key)
-		params.Set("tag["+strconv.Itoa(j+1)+"].value", tag.Value)
+		params.Set("tags["+strconv.Itoa(j+1)+"].key", tag.Key)
+		params.Set("tags["+strconv.Itoa(j+1)+"].value", tag.Value)
 	}
 
 	response, err := NewRequest(c, "deleteTags", params)

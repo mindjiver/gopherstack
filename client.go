@@ -53,12 +53,13 @@ func NewRequest(c CloudstackClient, request string, params url.Values) (interfac
 	// Generate signature for API call
 	// * Serialize parameters and sort them by key, done by Encode()
 	// * Use byte sequence for '+' character as Cloudstack requires this
+	// * For the signature only, un-encode [ and ].
 	// * Convert the entire argument string to lowercase
 	// * Calculate HMAC SHA1 of argument string with Cloudstack secret key
 	// * URL encode the string and convert to base64
 	s := params.Encode()
 	s2 := strings.Replace(s, "+", "%20", -1)
-	s3 := strings.ToLower(s2)
+	s3 := strings.ToLower(strings.Replace(strings.Replace(s2, "%5B", "[", -1), "%5D", "]", -1))
 	mac := hmac.New(sha1.New, []byte(c.SecretKey))
 	mac.Write([]byte(s3))
 	signature := base64.StdEncoding.EncodeToString(mac.Sum(nil))
