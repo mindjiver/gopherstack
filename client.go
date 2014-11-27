@@ -84,7 +84,7 @@ func NewRequest(c CloudstackClient, request string, params url.Values) (interfac
 
 	log.Printf("Response from Cloudstack: %d - %s", resp.StatusCode, body)
 	if resp.StatusCode != 200 {
-		err = errors.New(fmt.Sprintf("Received HTTP client/server error from Cloudstack: %d", resp.StatusCode))
+		err = errors.New(fmt.Sprintf("Received HTTP client/server error from Cloudstack: %d - %s", resp.StatusCode, body))
 		return nil, err
 	}
 
