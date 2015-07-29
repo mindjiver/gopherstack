@@ -5,6 +5,9 @@ Cloudstack API library written in Go. Tested towards Cloudstack 3.x
 and 4.x. Main use so far has been to serve as a library for a
 [Packer.io](http://www.packer.io) builder.
 
+[![Travis CI status](https://travis-ci.org/mindjiver/gopherstack.png?branch=master)](https://travis-ci.org/mindjiver/gopherstack/builds/)
+[![GoDoc](https://godoc.org/github.com/mindjiver/gopherstack?status.png)](https://godoc.org/github.com/mindjiver/gopherstack)
+
 Example usage
 -------------
 
@@ -56,6 +59,3 @@ func main() {
 
 }
 ```
-
-[![Travis CI status](https://travis-ci.org/mindjiver/gopherstack.png?branch=master)](https://travis-ci.org/mindjiver/gopherstack/builds/)
-[![GoDoc](https://godoc.org/github.com/mindjiver/gopherstack?status.png)](https://godoc.org/github.com/mindjiver/gopherstack)
